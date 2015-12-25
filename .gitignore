@@ -40,3 +40,6 @@ nosetests.xml
 
 # local DB
 db.sqlite3
+
+# Django Media Files
+media/covers
