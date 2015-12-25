@@ -1,3 +1,5 @@
+from xml.parsers.expat import ExpatError
+
 import requests
 import xmltodict
 from django.conf import settings
@@ -9,9 +11,10 @@ def get_book_details_by_id(goodreads_id):
     r = requests.get(api_url.format(goodreads_id, goodreads_api_key))
     try:
         book_data = xmltodict.parse(r.content)['GoodreadsResponse']['book']
-    except (TypeError, KeyError):
+    except (TypeError, KeyError, ExpatError):
         return False
-    keys = ['title', 'average_rating', 'ratings_count', 'description', 'url']
+    keys = ['title', 'average_rating', 'ratings_count', 'description', 'url',
+            'image_url']
     book = {}
     for k in keys:
         book[k] = book_data[k]
