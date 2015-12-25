@@ -10,6 +10,7 @@ class Book(TimeStampMixin):
     authors = models.CharField(max_length=300)
     description = models.TextField(blank=True)
     url = models.URLField()
+    cover = models.ImageField(upload_to='covers')
 
     average_rating = models.DecimalField(max_digits=3, decimal_places=2)
     ratings_count = models.IntegerField()
