@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'yossarian',
-    'yossarian.books'
+    'yossarian.books',
+    'yossarian.book_groups'
 ]
 
 MIDDLEWARE_CLASSES = [
