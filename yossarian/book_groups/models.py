@@ -9,7 +9,7 @@ class BookGroup(TimeStampMixin):
     name = models.CharField(max_length=300)
     is_active = models.BooleanField(default=True)
 
-    book = models.ForeignKey(Book)
+    book = models.OneToOneField(Book)
     owner = models.ForeignKey(User, related_name='owned_book_groups')
     members = models.ManyToManyField(User, related_name='book_groups')
 
@@ -20,3 +20,6 @@ class Progress(TimeStampMixin):
 
     book_group = models.ForeignKey(BookGroup)
     user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('book_group', 'user')
