@@ -43,3 +43,6 @@ db.sqlite3
 
 # Django Media Files
 media/covers
+
+# settings and secrets
+.envrc
