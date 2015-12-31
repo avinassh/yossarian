@@ -19,10 +19,11 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from yossarian.books.views import BookCreateView, BookListView
-from yossarian.book_groups.views import BookGroupListView
+from yossarian.book_groups.views import BookGroupListView, BookGroupCreateView
 
 urlpatterns = [
     url(r'^$', BookListView.as_view(), name='home'),
+    url(r'^groups/add', BookGroupCreateView.as_view()),
     url(r'^groups/', BookGroupListView.as_view()),
     url(r'^add/', BookCreateView.as_view()),
     url(r'^admin/', admin.site.urls),
