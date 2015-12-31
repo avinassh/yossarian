@@ -1,0 +1,13 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+<p>Groups So Far:</p>
+<ol>
+{% for book_group in book_groups_list %}
+    <li>
+      <b>{{ book_group.name }}</b>
+      <img src="/{{ book_group.book.cover.url }}" alt="My image"/>
+    </li>
+{% endfor %}
+</ol>
+{% endblock %}

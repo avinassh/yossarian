@@ -1,12 +1,9 @@
-import os
 import tempfile
-import urllib
 
 import requests
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.http import HttpResponseBadRequest
-from django.conf import settings
 from django.core.files import File
 
 from .models import Book
