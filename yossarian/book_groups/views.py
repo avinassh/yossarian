@@ -17,7 +17,15 @@ class BookGroupCreateView(CreateView):
 
     def form_valid(self, form):
         book_group = form.save(commit=False)
+        book_group.name = self._get_group_name(form)
         book_group.owner = self.request.user
         book_group.save()
         book_group.members.add(self.request.user)
         return super(BookGroupCreateView, self).form_valid(form)
+
+    def _get_group_name(self, form):
+        default_name = form.cleaned_data['book'].title + ' Group'
+        group_name = form.cleaned_data.get('name').strip()
+        if not group_name:
+            return default_name
+        return group_name
