@@ -9,4 +9,5 @@ class BookGroupForm(ModelForm):
 
     class Meta:
         model = BookGroup
-        fields = ['name', 'book', 'members']
+        fields = ['name', 'book']
+        widgets = {'book': forms.HiddenInput()}

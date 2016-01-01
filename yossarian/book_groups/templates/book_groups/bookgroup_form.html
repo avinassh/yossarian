@@ -1,6 +1,9 @@
 {% extends "books/base.html" %}
 
 {% block content %}
+
+You are creating a Book Group for {{ book.title }}:
+
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Create" />
