@@ -30,6 +30,11 @@ class MyBookGroupListView(ListView):
     def get_queryset(self):
         return BookGroup.objects.filter(members=self.request.user)
 
+    def get_context_data(self, **kwargs):
+        context = super(MyBookGroupListView, self).get_context_data(**kwargs)
+        context['my_groups'] = True
+        return context
+
 
 class BookGroupCreateView(CreateView):
     model = BookGroup

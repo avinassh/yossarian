@@ -7,7 +7,13 @@
     <li>
       <b><a href="{% url 'groups-detail' book_group.id %}">{{ book_group.name }}</a></b>
       <img src="/{{ book_group.book.cover.url }}" alt="My image"/>
-      <p><a href="{% url 'join' book_group.id %}">Join</a></p>
+
+      {% if my_groups %}
+        <p><a href="{% url 'leave' book_group.id %}">Leave</a></p>
+      {% else %}
+        <p><a href="{% url 'join' book_group.id %}">Join</a></p>
+      {% endif %}
+
     </li>
 {% endfor %}
 </ol>
