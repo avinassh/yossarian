@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import DetailView
 from django.shortcuts import get_object_or_404, render
 
 from yossarian.books.models import Book
@@ -57,9 +58,9 @@ class BookGroupCreateView(CreateView):
         return group_name
 
 
-class BookGroupUpdateView(UpdateView):
+class BookGroupDetailView(DetailView):
     model = BookGroup
-    fields = ['name']
+    context_object_name = 'book_group'
 
 
 class JoinBookGroupView(UpdateView):
