@@ -16,6 +16,12 @@ class BookGroupListView(ListView):
     model = BookGroup
     context_object_name = 'book_groups_list'
 
+    def get_queryset(self):
+        try:
+            return BookGroup.objects.exclude(members=self.request.user)
+        except TypeError:
+            return BookGroup.objects.all()
+
 
 class MyBookGroupListView(ListView):
     model = BookGroup
