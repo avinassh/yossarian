@@ -1,6 +1,7 @@
 from django.http import Http404
+from django.http import HttpResponse
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import get_object_or_404
 
 from yossarian.books.models import Book
@@ -45,3 +46,30 @@ class BookGroupCreateView(CreateView):
         if not group_name:
             return default_name
         return group_name
+
+
+class BookGroupUpdateView(UpdateView):
+    model = BookGroup
+    fields = ['name']
+
+
+class JoinBookGroupView(UpdateView):
+    model = BookGroup
+
+    def get(self, request, pk):
+        user = self.request.user
+        book_group = self.get_object()
+        book_group.members.add(user)
+        Progress.objects.get_or_create(book_group=book_group, user=user)
+        return HttpResponse('You have successfully joined the group')
+
+
+class LeaveBookGroupView(UpdateView):
+    model = BookGroup
+
+    def get(self, request, pk):
+        user = self.request.user
+        book_group = self.get_object()
+        book_group.members.remove(user)
+        Progress.objects.filter(book_group=book_group, user=user).delete()
+        return HttpResponse('You have successfully left the group')
