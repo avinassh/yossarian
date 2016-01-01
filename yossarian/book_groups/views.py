@@ -104,3 +104,12 @@ class BookGroupsProgressView(View):
         context['completions'] = Progress.objects.filter(
             is_complete=True).count()
         return render(request, self.template_name, context)
+
+
+class UpdateProgressView(UpdateView):
+    model = Progress
+    success_url = '/myprogress/'
+    fields = ['pages', 'is_complete']
+
+    def get_queryset(self):
+        return Progress.objects.filter(user=self.request.user)
