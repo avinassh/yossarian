@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from yossarian.books.models import Book
 
-from .models import BookGroup
+from .models import BookGroup, Progress
 from .forms import BookGroupForm
 
 
@@ -36,6 +36,7 @@ class BookGroupCreateView(CreateView):
         book_group.owner = self.request.user
         book_group.save()
         book_group.members.add(self.request.user)
+        Progress.objects.create(book_group=book_group, user=self.request.user)
         return super(BookGroupCreateView, self).form_valid(form)
 
     def _get_group_name(self, form):
