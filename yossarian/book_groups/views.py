@@ -68,6 +68,18 @@ class BookGroupDetailView(DetailView):
     model = BookGroup
     context_object_name = 'book_group'
 
+    def get_context_data(self, object):
+        context = super(BookGroupDetailView, self).get_context_data(
+            object=object)
+        try:
+            user = self.request.user
+            progress = Progress.objects.get(book_group=object, user=user)
+            if progress:
+                context['progress'] = progress
+        except (TypeError, Progress.DoesNotExist):
+            pass
+        return context
+
 
 class JoinBookGroupView(UpdateView):
     model = BookGroup

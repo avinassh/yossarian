@@ -9,7 +9,15 @@
 
 <br>
 
-<p> Join this book group - <a href="{% url 'join' book_group.id %}">Click Here!</a>  </p>
+{% if progress %}
+
+<p> You are already part of this Book Group. Your progress so far is {{ progress.pages }}
+
+{% else %}
+
+<p> Join this book group - <a href="{% url 'join' book_group.id %}">Click Here!</a></p>
+
+{% endif %}
 
 
 {% endblock %}
