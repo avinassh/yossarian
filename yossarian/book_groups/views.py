@@ -76,6 +76,9 @@ class JoinBookGroupView(UpdateView):
 class LeaveBookGroupView(UpdateView):
     model = BookGroup
 
+    def get_queryset(self):
+        return BookGroup.objects.filter(members=self.request.user)
+
     def get(self, request, pk):
         user = self.request.user
         book_group = self.get_object()
