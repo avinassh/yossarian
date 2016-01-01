@@ -1,0 +1,16 @@
+{% extends "books/base.html" %}
+
+{% block content %}
+<p>My Progress So Far:</p>
+<ol>
+{% for progress in progress_list %}
+    <li>
+    <ul>
+      <li><b> Book Group Name </b>: {{ progress.book_group.name }} </li>
+      <li><b> Book Name </b>: {{ progress.book_group.book.title }} </li>
+      <li><b> Progress </b>: {{ progress.pages }} </li>
+      </ul>
+    </li>
+{% endfor %}
+</ol>
+{% endblock %}

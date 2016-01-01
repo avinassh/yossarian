@@ -81,3 +81,11 @@ class LeaveBookGroupView(UpdateView):
         book_group.members.remove(user)
         Progress.objects.filter(book_group=book_group, user=user).delete()
         return HttpResponse('You have successfully left the group')
+
+
+class MyProgessListView(ListView):
+    model = Progress
+    context_object_name = 'progress_list'
+
+    def get_queryset(self):
+        return Progress.objects.filter(user=self.request.user)
