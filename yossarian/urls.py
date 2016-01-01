@@ -21,13 +21,15 @@ from django.conf import settings
 from yossarian.books.views import BookCreateView, BookListView
 from yossarian.book_groups.views import (
     BookGroupListView, BookGroupCreateView, JoinBookGroupView,
-    LeaveBookGroupView, MyBookGroupListView, MyProgessListView)
+    LeaveBookGroupView, MyBookGroupListView, MyProgessListView,
+    BookGroupsProgressView)
 
 urlpatterns = [
     url(r'^$', BookListView.as_view(), name='home'),
     url(r'^groups/add', BookGroupCreateView.as_view()),
     url(r'^mygroups/$', MyBookGroupListView.as_view()),
     url(r'^myprogress/$', MyProgessListView.as_view()),
+    url(r'^progress/$', BookGroupsProgressView.as_view()),
     url(r'^join/(?P<pk>[0-9]+)/$', JoinBookGroupView.as_view()),
     url(r'^leave/(?P<pk>[0-9]+)/$', LeaveBookGroupView.as_view()),
     url(r'^groups/', BookGroupListView.as_view()),

@@ -1,8 +1,9 @@
 from django.http import Http404
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.contrib.auth.models import User
+from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 from yossarian.books.models import Book
 
@@ -89,3 +90,17 @@ class MyProgessListView(ListView):
 
     def get_queryset(self):
         return Progress.objects.filter(user=self.request.user)
+
+
+class BookGroupsProgressView(View):
+    template_name = 'book_groups/progress.html'
+
+    def get(self, request):
+        context = {}
+        context['total'] = BookGroup.objects.count()
+        context['users'] = User.objects.exclude(book_groups=None).count()
+        context['bg_owners'] = User.objects.exclude(
+            owned_book_groups=None).count()
+        context['completions'] = Progress.objects.filter(
+            is_complete=True).count()
+        return render(request, self.template_name, context)
