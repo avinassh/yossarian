@@ -15,6 +15,14 @@ class BookGroupListView(ListView):
     context_object_name = 'book_groups_list'
 
 
+class MyBookGroupListView(ListView):
+    model = BookGroup
+    context_object_name = 'book_groups_list'
+
+    def get_queryset(self):
+        return BookGroup.objects.filter(members=self.request.user)
+
+
 class BookGroupCreateView(CreateView):
     model = BookGroup
     form_class = BookGroupForm
