@@ -46,3 +46,6 @@ class WeeklyBook(TimeStampMixin):
     class Meta:
         unique_together = ('week_number', 'is_english')
         ordering = ['week_number']
+
+    def __str__(self):
+        return "<Week {} - {}>".format(self.week_number, self.book.title[:10])
