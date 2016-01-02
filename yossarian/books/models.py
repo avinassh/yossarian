@@ -16,6 +16,7 @@ class Book(TimeStampMixin):
     average_rating = models.DecimalField(max_digits=3, decimal_places=2)
     ratings_count = models.PositiveIntegerField()
     is_reviewed = models.BooleanField(default=False)
+    is_contestant = models.BooleanField(default=False)
 
     added_by = models.ForeignKey(User)
 
