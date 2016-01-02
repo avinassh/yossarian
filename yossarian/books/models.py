@@ -13,9 +13,9 @@ class Book(TimeStampMixin):
     cover = models.ImageField(upload_to='covers')
     lang_code = models.CharField(max_length=3, default='eng')
     page_count = models.PositiveIntegerField(default=1)
-
     average_rating = models.DecimalField(max_digits=3, decimal_places=2)
     ratings_count = models.PositiveIntegerField()
+    is_reviewed = models.BooleanField(default=False)
 
     added_by = models.ForeignKey(User)
 
