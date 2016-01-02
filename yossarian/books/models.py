@@ -61,3 +61,6 @@ class Vote(TimeStampMixin):
             MinValueValidator(-1)
         ])
     user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('book', 'user')
