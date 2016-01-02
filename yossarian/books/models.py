@@ -49,3 +49,15 @@ class WeeklyBook(TimeStampMixin):
 
     def __str__(self):
         return "<Week {} - {}>".format(self.week_number, self.book.title[:10])
+
+
+class Vote(TimeStampMixin):
+
+    book = models.ForeignKey(Book)
+    value = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(1),
+            MinValueValidator(-1)
+        ])
+    user = models.ForeignKey(User)
