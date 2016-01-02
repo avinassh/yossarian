@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from yossarian.utils import TimeStampMixin
+
+from .validators import is_monday
 
 
 class Book(TimeStampMixin):
@@ -25,3 +28,21 @@ class Book(TimeStampMixin):
 
     class Meta:
         ordering = ['average_rating']
+
+
+class WeeklyBook(TimeStampMixin):
+    week_number = models.PositiveIntegerField(
+        unique=True,
+        validators=[
+            MaxValueValidator(53),
+            MinValueValidator(1)
+        ])
+    week_date = models.DateField(validators=[is_monday])
+    is_english = models.BooleanField()
+    on_homepage = models.BooleanField(default=False)
+
+    book = models.OneToOneField(Book)
+
+    class Meta:
+        unique_together = ('week_number', 'is_english')
+        ordering = ['week_number']
