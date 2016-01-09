@@ -2,12 +2,12 @@ import tempfile
 
 import requests
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
-from django.http import HttpResponseBadRequest
+from django.views.generic.edit import CreateView, UpdateView
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.core.files import File
 
-from .models import Book
-from .forms import BookForm
+from .models import Book, Vote
+from .forms import BookForm, VoteForm
 from .goodreads_api import get_book_details_by_id
 
 
@@ -38,6 +38,15 @@ class BookCreateView(CreateView):
         save_book_cover(book, img_name=book.goodreads_id, img_url=image_url)
 
         return super(BookCreateView, self).form_valid(form)
+
+
+class ArenaView(ListView):
+    model = Book
+    context_object_name = 'book_list'
+    template_name = 'books/arena.html'
+
+    def get_queryset(self):
+        return Book.objects.filter(is_reviewed=True, is_contestant=True)
 
 
 def save_book_cover(book, img_name, img_url):

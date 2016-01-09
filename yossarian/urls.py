@@ -18,7 +18,8 @@ from django.conf.urls import url, patterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.conf import settings
-from yossarian.books.views import BookCreateView, BookListView
+from yossarian.books.views import (
+    BookCreateView, BookListView, ArenaView, UpdateArenaView)
 from yossarian.book_groups.views import (
     BookGroupListView, BookGroupCreateView, JoinBookGroupView,
     LeaveBookGroupView, MyBookGroupListView, MyProgessListView,
@@ -26,6 +27,8 @@ from yossarian.book_groups.views import (
 
 urlpatterns = [
     url(r'^$', BookListView.as_view(), name='home'),
+    url(r'^arena/$', ArenaView.as_view()),
+    url(r'^arena_vote/(?P<pk>[0-9]+)/$', UpdateArenaView.as_view()),
     url(r'^groups/add/$', BookGroupCreateView.as_view()),
     url(r'^mygroups/$', MyBookGroupListView.as_view()),
     url(r'^myprogress/$', MyProgessListView.as_view()),
