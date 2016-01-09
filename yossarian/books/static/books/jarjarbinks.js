@@ -17,12 +17,11 @@ function getCookie(name) {
 function vote(voteButton) {
     var csrftoken = getCookie('csrftoken');
 
-    console.log('click request received')
-    var targeValues = $.parseJSON($(voteButton).attr("target-values"));
+    var targetValues = $.parseJSON($(voteButton).attr("target-values"));
 
-    if (targeValues.currentValue == 0) {
+    if (targetValues.currentValue == 0) {
         var voteValue = 1;
-    } else{
+    } else {
         var voteValue = 0;
     };
 
@@ -32,11 +31,22 @@ function vote(voteButton) {
         }
     });
 
-    var postURL = '/arena_vote/' + targeValues.book + '/'
+    var postURL = '/arena_vote/' + targetValues.book + '/'
 
-    console.log(voteValue, postURL)
-
-    var doPost = $.post(postURL, {
-        value: voteValue
-    });
+    $.post(postURL, { value: voteValue})
+        .done(function(data) {
+            console.log("missa happy!")
+            targetValues.currentValue = voteValue
+            if (voteValue == 1) {
+                $(voteButton).text("Voted")
+                $(voteButton).addClass("voted")
+            } else {
+                $(voteButton).text("Vote")
+                $(voteButton).removeClass("voted")
+            }
+            $(voteButton).attr("target-values", JSON.stringify(targetValues))
+        })
+        .fail(function(data) {
+            console.log("missa no care!")
+        });
 }
