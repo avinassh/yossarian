@@ -4,7 +4,7 @@ import random
 import requests
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.template.defaulttags import register
 from django.core.files import File
 
@@ -87,7 +87,7 @@ class UpdateArenaView(UpdateView):
         vote, created = Vote.objects.update_or_create(
             book=book, user=user, defaults={'value': vote_value})
         if vote:
-            return HttpResponse(vote_value)
+            return JsonResponse({"voteValue": vote_value})
 
 
 def save_book_cover(book, img_name, img_url):
