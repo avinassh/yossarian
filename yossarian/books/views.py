@@ -1,4 +1,5 @@
 import tempfile
+import random
 
 import requests
 from django.views.generic import ListView
@@ -47,6 +48,26 @@ class ArenaView(ListView):
 
     def get_queryset(self):
         return Book.objects.filter(is_reviewed=True, is_contestant=True)
+
+    def get_context_data(self, **kwargs):
+        query_set = self.get_queryset()
+        count = query_set.count()
+        if count > 20:
+            random_ids = random.sample(range(1, count), 20)
+            self.query_set = query_set.filter(id__in=random_ids)
+        if self.request.user.is_authenticated():
+            context = super(ArenaView, self).get_context_data(**kwargs)
+            user = self.request.user
+            votes_list = {}
+            for book in context['book_list']:
+                try:
+                    vote = Vote.objects.get(book=book, user=user)
+                    votes_list[book.id] = vote.value
+                except Vote.DoesNotExist:
+                    votes_list[book.id] = 0
+            context['votes_list'] = votes_list
+            return context
+        return super(ArenaView, self).get_context_data(**kwargs)
 
 
 class UpdateArenaView(UpdateView):
