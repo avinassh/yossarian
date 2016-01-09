@@ -5,11 +5,17 @@ import requests
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.template.defaulttags import register
 from django.core.files import File
 
 from .models import Book, Vote
 from .forms import BookForm, VoteForm
 from .goodreads_api import get_book_details_by_id
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 
 
 class BookListView(ListView):
