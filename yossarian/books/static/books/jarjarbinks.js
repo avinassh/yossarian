@@ -39,10 +39,10 @@ function vote(voteButton) {
             targetValues.currentValue = voteValue
             if (voteValue == 1) {
                 $(voteButton).text("Voted")
-                $(voteButton).addClass("voted")
+                $(voteButton).removeClass("not-voted").addClass("voted")
             } else {
                 $(voteButton).text("Vote")
-                $(voteButton).removeClass("voted")
+                $(voteButton).removeClass("voted").addClass("not-voted")
             }
             $(voteButton).attr("target-values", JSON.stringify(targetValues))
         })
