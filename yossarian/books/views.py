@@ -49,6 +49,20 @@ class ArenaView(ListView):
         return Book.objects.filter(is_reviewed=True, is_contestant=True)
 
 
+class UpdateArenaView(UpdateView):
+    model = Book
+    form_class = VoteForm
+
+    def form_valid(self, form):
+        vote_value = form.cleaned_data['value']
+        book = self.object
+        user = self.request.user
+        vote, created = Vote.objects.update_or_create(
+            book=book, user=user, defaults={'value': vote_value})
+        if vote:
+            return HttpResponse(vote_value)
+
+
 def save_book_cover(book, img_name, img_url):
     if not img_url:
         return
