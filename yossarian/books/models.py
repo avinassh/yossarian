@@ -24,7 +24,7 @@ class Book(TimeStampMixin):
     added_by = models.ForeignKey(User)
 
     def __str__(self):
-        return "<{} - {}>".format(self.id, self.title[:30])
+        return "{} - {}".format(self.id, self.title[:30])
 
     class Meta:
         ordering = ['average_rating']
@@ -48,7 +48,7 @@ class WeeklyBook(TimeStampMixin):
         ordering = ['week_number']
 
     def __str__(self):
-        return "<Week {} - {}>".format(self.week_number, self.book.title[:10])
+        return "{} - {}".format(self.week_number, self.book.title[:10])
 
 
 class Vote(TimeStampMixin):
