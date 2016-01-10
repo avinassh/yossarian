@@ -10,7 +10,6 @@ class BookGroup(TimeStampMixin):
     is_active = models.BooleanField(default=True)
 
     book = models.OneToOneField(Book)
-    owner = models.ForeignKey(User, related_name='owned_book_groups')
     members = models.ManyToManyField(User, related_name='book_groups')
 
 
