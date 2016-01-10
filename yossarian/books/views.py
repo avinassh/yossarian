@@ -8,6 +8,8 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.template.defaulttags import register
 from django.core.files import File
 
+from yossarian.book_groups.models import BookGroup
+
 from .models import Book, Vote
 from .forms import BookForm, VoteForm
 from .goodreads_api import get_book_details_by_id
@@ -43,7 +45,7 @@ class BookCreateView(CreateView):
         book.url = book_details.get('url')
         image_url = book_details.get('image_url')
         save_book_cover(book, img_name=book.goodreads_id, img_url=image_url)
-
+        BookGroup.objects.create(book=book, name=book.title)
         return super(BookCreateView, self).form_valid(form)
 
 
