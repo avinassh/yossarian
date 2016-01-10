@@ -2,7 +2,7 @@
 <html>
   <head>
 
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="{% static 'books/jquery-2.1.4.min.js' %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'books/style.css' %}" />
   </head>
   <body>
@@ -10,5 +10,6 @@
     {% block content %}
     {% endblock %}
 
+  <script type="text/javascript" src="{% static 'books/jarjarbinks.js' %}"></script>
   </body>
 </html>

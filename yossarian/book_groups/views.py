@@ -89,8 +89,6 @@ class BookGroupsProgressView(View):
         context = {}
         context['total'] = BookGroup.objects.count()
         context['users'] = User.objects.exclude(book_groups=None).count()
-        context['bg_owners'] = User.objects.exclude(
-            owned_book_groups=None).count()
         context['completions'] = Progress.objects.filter(
             is_complete=True).count()
         return render(request, self.template_name, context)
