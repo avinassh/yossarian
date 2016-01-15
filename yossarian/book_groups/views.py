@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render
 
 from .models import BookGroup, Progress, Comment
+from .forms import CommentVoteForm
 
 
 class BookGroupListView(ListView):
@@ -102,3 +103,8 @@ class UpdateProgressView(UpdateView):
 
     def get_queryset(self):
         return Progress.objects.filter(user=self.request.user)
+
+
+class CommentVoteView(UpdateView):
+    model = Comment
+    form_class = CommentVoteForm
