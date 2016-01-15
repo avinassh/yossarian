@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import CommentVote
+from .models import CommentVote, Comment
 
 
 class CommentVoteForm(ModelForm):
@@ -10,3 +10,10 @@ class CommentVoteForm(ModelForm):
     class Meta:
         model = CommentVote
         fields = ['value']
+
+
+class CreateCommentForm(ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['raw_comment', 'parent', 'book']

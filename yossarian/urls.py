@@ -21,7 +21,7 @@ from django.conf import settings
 from yossarian.books.views import (
     BookCreateView, BookListView, ArenaView, UpdateArenaVoteView)
 from yossarian.book_groups.views import (
-    BookGroupListView, JoinBookGroupView,
+    BookGroupListView, JoinBookGroupView, CommentCreateView,
     LeaveBookGroupView, MyBookGroupListView, MyProgessListView,
     BookGroupsProgressView, UpdateProgressView, BookGroupDetailView)
 
@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^groups/(?P<pk>[0-9]+)/$', BookGroupDetailView.as_view(),
         name='groups-detail'),
     url(r'^groups/', BookGroupListView.as_view()),
+    url(r'^comments/$', CommentCreateView.as_view()),
     url(r'^add/', BookCreateView.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^login/', auth_views.login, name='login'),

@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views.generic import View, ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import render
 
 from .models import BookGroup, Progress, Comment
-from .forms import CommentVoteForm
+from .forms import CommentVoteForm, CreateCommentForm
 
 
 class BookGroupListView(ListView):
@@ -108,3 +108,16 @@ class UpdateProgressView(UpdateView):
 class CommentVoteView(UpdateView):
     model = Comment
     form_class = CommentVoteForm
+
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CreateCommentForm
+    success_url = '/groups/1/'
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.html_comment = comment.raw_comment
+        comment.author = self.request.user
+        comment.author_name = self.request.user.username
+        return super(CommentCreateView, self).form_valid(form)
