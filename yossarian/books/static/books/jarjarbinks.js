@@ -68,6 +68,10 @@ function displayCommentBox(replyDiv) {
     } else {
         var contentDiv = $(commentDiv).children(".content");
         $(contentDiv).after(replyBoxForm);
+        var replyBox = $(commentDiv).children(".reply-box")
+        replyBox.on("submit", function(e){
+            postComment(e, $(this))
+        });
     };
     return false;
 }
