@@ -1,0 +1,21 @@
+{% load humanize %}
+{% load mptt_tags %}
+
+<p>comments start</p>
+
+{% recursetree comments %}
+        <div>
+            <h5><a href="/sith/{{ node.author_name }}">{{ node.author_name }}</a></h5>
+            {{ node.html_comment|safe }}
+            <div>
+                <ul>
+                    <li><a href="#">reply</a></li>
+                </ul>
+            </div>
+            {% if not node.is_leaf_node %}
+                {{ children }}
+            {% endif %}
+        </div>
+{% endrecursetree %}
+
+<p>comments end</p>
