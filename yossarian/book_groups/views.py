@@ -5,7 +5,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import render
 
-from .models import BookGroup, Progress
+from .models import BookGroup, Progress, Comment
 
 
 class BookGroupListView(ListView):
@@ -46,6 +46,7 @@ class BookGroupDetailView(DetailView):
                 context['progress'] = progress
         except (TypeError, Progress.DoesNotExist):
             pass
+        context['comments'] = Comment.objects.filter(book=object.book)
         return context
 
 
