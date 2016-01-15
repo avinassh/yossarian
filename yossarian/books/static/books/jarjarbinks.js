@@ -52,10 +52,11 @@ function vote(voteButton) {
 }
 
 
-var replyBoxForm = '<div class="reply-box"><form class="ui reply form">' +
-                   '<div class="field"><textarea></textarea>' + 
-                   '</div><div class="ui blue labeled submit icon button">' + 
-                   '<i class="icon edit"></i> Add Reply</div></form></div>'
+var replyBoxForm = '<div class="reply-box">' +
+                  '<form class="ui reply form" action="/comments/" method="post" >' +
+                   '<div class="field"><textarea></textarea></div>' +
+                   '<button class="ui blue labeled submit icon button">' +
+                   '<i class="icon edit"></i>Add Reply</button></form></div>'
 
 
 function displayCommentBox(replyDiv) {
@@ -69,4 +70,29 @@ function displayCommentBox(replyDiv) {
         $(contentDiv).after(replyBoxForm);
     };
     return false;
+}
+
+function postComment(replyBoxEvent, formContainer) {
+    replyBoxEvent.preventDefault();
+    var csrftoken = getCookie('csrftoken');
+    raw_comment = formContainer.find('textarea').val()
+    var commentDiv = formContainer.closest('.comment')
+    var targetValues = $.parseJSON(commentDiv.attr("target-values"));
+    console.log(targetValues)
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    });
+
+    $.post('/comments/', {raw_comment: raw_comment, book: targetValues.book_id,
+                    parent: targetValues.comment_id}
+        ).done(function(data) {
+            console.log("missa happy!")
+        })
+        .fail(function(data) {
+            console.log("missa no care!")
+        });
+
 }
