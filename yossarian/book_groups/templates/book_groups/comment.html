@@ -5,6 +5,10 @@
   <h3 class="ui dividing header">Discussion</h3>
 {% recursetree comments %}
     <div class="comment">
+        <div class="avatar comment-votes">
+            <div><i class="chevron up icon"></i></div>
+            <div><i class="chevron down icon"></i></div>
+        </div>
         <div class="content">
           <a class="author">{{ node.author_name }}</a>
           <div class="metadata">
