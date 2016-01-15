@@ -4,7 +4,8 @@
 <div class="ui threaded comments">
   <h3 class="ui dividing header">Discussion</h3>
 {% recursetree comments %}
-    <div class="comment">
+    <div class="comment"
+        target-values='{"comment_id": {{ node.id }}, "book_id": {{ node.book.id }} }'>
         <div class="avatar comment-votes">
             <div><i class="chevron up icon"></i></div>
             <div><i class="chevron down icon"></i></div>
@@ -18,9 +19,7 @@
             {{ node.html_comment|safe }}
           </div>
           <div class="actions">
-            <a href="#!"
-            target-values='{"comment_id": {{ node.id }}, "book_id": {{ node.book.id }} }'
-            class="reply" onclick="displayCommentBox(this)">Reply</a>
+            <a href="#!" class="reply" onclick="displayCommentBox(this)">Reply</a>
           </div>
         </div>
 
