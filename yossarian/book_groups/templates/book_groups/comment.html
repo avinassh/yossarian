@@ -1,21 +1,33 @@
 {% load humanize %}
 {% load mptt_tags %}
 
-<p>comments start</p>
-
+<div class="ui threaded comments">
+  <h3 class="ui dividing header">Discussion</h3>
 {% recursetree comments %}
-        <div>
-            <h5><a href="/sith/{{ node.author_name }}">{{ node.author_name }}</a></h5>
+    <div class="comment">
+        <div class="content">
+          <a class="author">{{ node.author_name }}</a>
+          <div class="metadata">
+            <span class="date">Today at 5:42PM</span>
+          </div>
+          <div class="text">
             {{ node.html_comment|safe }}
-            <div>
-                <ul>
-                    <li><a href="#">reply</a></li>
-                </ul>
-            </div>
-            {% if not node.is_leaf_node %}
-                {{ children }}
-            {% endif %}
+          </div>
+          <div class="actions">
+            <a href="#"
+            target-values='{"comment_id": {{ node.id }}, "book_id": {{ node.book.id }} }'
+            class="reply" onclick="displayCommentBox(this)">Reply</a>
+          </div>
         </div>
+
+        {% if not node.is_leaf_node %}
+            <div class="comments">
+            {{ children }}
+            </div>
+        {% endif %}
+
+    </div>
 {% endrecursetree %}
+</div>
 
 <p>comments end</p>
