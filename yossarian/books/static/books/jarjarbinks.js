@@ -50,3 +50,23 @@ function vote(voteButton) {
             console.log("missa no care!")
         });
 }
+
+
+var replyBoxForm = '<div class="reply-box"><form class="ui reply form">' +
+                   '<div class="field"><textarea></textarea>' + 
+                   '</div><div class="ui blue labeled submit icon button">' + 
+                   '<i class="icon edit"></i> Add Reply</div></form></div>'
+
+
+function displayCommentBox(replyDiv) {
+    var commentDiv = $(replyDiv).closest(".comment");
+    var replyBox = $(commentDiv).children(".reply-box");
+
+    if (replyBox.length) {
+        $(replyBox).toggle();
+    } else {
+        var contentDiv = $(commentDiv).children(".content");
+        $(contentDiv).after(replyBoxForm);
+    };
+    return false;
+}
