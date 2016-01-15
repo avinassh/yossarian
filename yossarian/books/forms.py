@@ -11,7 +11,7 @@ class BookForm(ModelForm):
         fields = ['goodreads_id']
 
 
-class VoteForm(ModelForm):
+class ArenaVoteForm(ModelForm):
     value = forms.IntegerField(min_value=0, max_value=1)
 
     class Meta:

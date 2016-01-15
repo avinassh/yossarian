@@ -11,7 +11,7 @@ from django.core.files import File
 from yossarian.book_groups.models import BookGroup
 
 from .models import Book, Vote
-from .forms import BookForm, VoteForm
+from .forms import BookForm, ArenaVoteForm
 from .goodreads_api import get_book_details_by_id
 
 
@@ -78,9 +78,9 @@ class ArenaView(ListView):
         return super(ArenaView, self).get_context_data(**kwargs)
 
 
-class UpdateArenaView(UpdateView):
+class UpdateArenaVoteView(UpdateView):
     model = Book
-    form_class = VoteForm
+    form_class = ArenaVoteForm
 
     def form_valid(self, form):
         vote_value = form.cleaned_data['value']
