@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from mptt.models import MPTTModel, TreeForeignKey
 
 from yossarian.utils import TimeStampMixin
 
@@ -63,3 +64,35 @@ class Vote(TimeStampMixin):
 
     class Meta:
         unique_together = ('book', 'user')
+
+
+class Comment(MPTTModel, TimeStampMixin):
+    author_name = models.CharField(null=False, max_length=12)
+    raw_comment = models.TextField()
+    html_comment = models.TextField()
+    ups = models.IntegerField(default=0)
+    downs = models.IntegerField(default=0)
+    score = models.IntegerField(default=0)
+
+    author = models.ForeignKey(User)
+    parent = TreeForeignKey('self', related_name='children',
+                            null=True, blank=True, db_index=True)
+    book = models.ForeignKey('books.Book')
+
+    class MPTTMeta:
+        order_insertion_by = ['-score']
+
+
+class CommentVote(TimeStampMixin):
+    value = models.IntegerField(
+        default=0,
+        validators=[
+            MaxValueValidator(1),
+            MinValueValidator(-1)
+        ])
+
+    comment = models.ForeignKey(Comment)
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('comment', 'user')

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, WeeklyBook
+from .models import Book, WeeklyBook, Comment
 
 
 class BookAdmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class WeeklyBookAdmin(admin.ModelAdmin):
 
 admin.site.register(WeeklyBook, WeeklyBookAdmin)
 admin.site.register(Book, BookAdmin)
+admin.site.register(Comment)
