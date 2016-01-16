@@ -1,0 +1,36 @@
+{% load humanize %}
+{% load mptt_tags %}
+
+<div class="ui threaded comments">
+  <h3 class="ui dividing header">Discussion</h3>
+{% recursetree comments %}
+    <div class="comment"
+        target-values='{"comment_id": {{ node.id }}, "book_id": {{ node.book.id }} }'>
+        <div class="avatar comment-votes">
+            <div><i class="chevron up icon"></i></div>
+            <div><i class="chevron down icon"></i></div>
+        </div>
+        <div class="content">
+          <a class="author">{{ node.author_name }}</a>
+          <div class="metadata">
+            <span class="date">{{ node.created_on|naturaltime }}</span>
+          </div>
+          <div class="text">
+            {{ node.html_comment|safe }}
+          </div>
+          <div class="actions">
+            <a href="#!" class="reply" onclick="displayCommentBox(this)">Reply</a>
+          </div>
+        </div>
+
+        {% if not node.is_leaf_node %}
+            <div class="comments">
+            {{ children }}
+            </div>
+        {% endif %}
+
+    </div>
+{% endrecursetree %}
+</div>
+
+<p>comments end</p>
