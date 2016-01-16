@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.views.generic import View, ListView
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import render
 
@@ -110,14 +110,27 @@ class CommentVoteView(UpdateView):
     form_class = CommentVoteForm
 
 
-class CommentCreateView(CreateView):
-    model = Comment
+class CommentCreateView(View):
     form_class = CreateCommentForm
-    success_url = '/groups/1/'
 
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.html_comment = comment.raw_comment
-        comment.author = self.request.user
-        comment.author_name = self.request.user.username
-        return super(CommentCreateView, self).form_valid(form)
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.html_comment = comment.raw_comment
+            comment.author = self.request.user
+            comment.author_name = self.request.user.username
+            comment.save()
+            response = self.get_response_dict(comment)
+            return JsonResponse(response)
+
+    def get_response_dict(self, comment):
+        response = {
+                    'status': 'success',
+                    'comment': {
+                        'id': comment.id,
+                        'html_comment': comment.html_comment,
+                        'author_name': comment.author_name
+                    }
+                }
+        return response
