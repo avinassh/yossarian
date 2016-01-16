@@ -1,12 +1,10 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.views.generic import View, ListView
 from django.views.generic.edit import UpdateView
-from django.views.generic.detail import DetailView
 from django.shortcuts import render
 
-from .models import BookGroup, Progress, Comment
-from .forms import CommentVoteForm, CreateCommentForm
+from .models import BookGroup, Progress
 
 
 class BookGroupListView(ListView):
@@ -30,24 +28,6 @@ class MyBookGroupListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(MyBookGroupListView, self).get_context_data(**kwargs)
         context['my_groups'] = True
-        return context
-
-
-class BookGroupDetailView(DetailView):
-    model = BookGroup
-    context_object_name = 'book_group'
-
-    def get_context_data(self, object):
-        context = super(BookGroupDetailView, self).get_context_data(
-            object=object)
-        try:
-            user = self.request.user
-            progress = Progress.objects.get(book_group=object, user=user)
-            if progress:
-                context['progress'] = progress
-        except (TypeError, Progress.DoesNotExist):
-            pass
-        context['comments'] = Comment.objects.filter(book=object.book)
         return context
 
 
@@ -103,34 +83,3 @@ class UpdateProgressView(UpdateView):
 
     def get_queryset(self):
         return Progress.objects.filter(user=self.request.user)
-
-
-class CommentVoteView(UpdateView):
-    model = Comment
-    form_class = CommentVoteForm
-
-
-class CommentCreateView(View):
-    form_class = CreateCommentForm
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.html_comment = comment.raw_comment
-            comment.author = self.request.user
-            comment.author_name = self.request.user.username
-            comment.save()
-            response = self.get_response_dict(comment)
-            return JsonResponse(response)
-
-    def get_response_dict(self, comment):
-        response = {
-                    'success': True,
-                    'comment': {
-                        'id': comment.id,
-                        'html_comment': comment.html_comment,
-                        'author_name': comment.author_name
-                    }
-                }
-        return response
