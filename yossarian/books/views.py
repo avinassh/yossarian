@@ -2,7 +2,7 @@ import tempfile
 import random
 
 import requests
-from django.views.generic import ListView
+from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.http import HttpResponseBadRequest, JsonResponse
@@ -12,8 +12,8 @@ from django.utils import timezone
 
 from yossarian.book_groups.models import BookGroup
 
-from .models import Book, Vote
-from .forms import BookForm, ArenaVoteForm
+from .models import Book, Vote, Comment
+from .forms import BookForm, ArenaVoteForm, CommentVoteForm, CreateCommentForm
 from .goodreads_api import get_book_details_by_id
 
 
@@ -120,3 +120,39 @@ class HomePageView(ListView):
 
 class BookDetailView(DetailView):
     model = Book
+
+    def get_context_data(self, object):
+        context = super(BookDetailView, self).get_context_data(
+            object=object)
+        context['comments'] = Comment.objects.filter(book=object)
+        return context
+
+
+class CommentVoteView(UpdateView):
+    form_class = CommentVoteForm
+
+
+class CommentCreateView(View):
+    form_class = CreateCommentForm
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.html_comment = comment.raw_comment
+            comment.author = self.request.user
+            comment.author_name = self.request.user.username
+            comment.save()
+            response = self.get_response_dict(comment)
+            return JsonResponse(response)
+
+    def get_response_dict(self, comment):
+        response = {
+                    'success': True,
+                    'comment': {
+                        'id': comment.id,
+                        'html_comment': comment.html_comment,
+                        'author_name': comment.author_name
+                    }
+                }
+        return response

@@ -20,9 +20,9 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from yossarian.books.views import (
     BookCreateView, BookListView, ArenaView, UpdateArenaVoteView,
-    HomePageView, BookDetailView)
+    HomePageView, BookDetailView, CommentCreateView)
 from yossarian.book_groups.views import (
-    BookGroupListView, JoinBookGroupView, CommentCreateView,
+    BookGroupListView, JoinBookGroupView,
     LeaveBookGroupView, MyBookGroupListView, MyProgessListView,
     BookGroupsProgressView, UpdateProgressView, BookGroupDetailView)
 
