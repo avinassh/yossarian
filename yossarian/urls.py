@@ -20,7 +20,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from yossarian.books.views import (
     BookCreateView, BookListView, ArenaView, UpdateArenaVoteView,
-    HomePageView)
+    HomePageView, BookDetailView)
 from yossarian.book_groups.views import (
     BookGroupListView, JoinBookGroupView, CommentCreateView,
     LeaveBookGroupView, MyBookGroupListView, MyProgessListView,
@@ -28,6 +28,8 @@ from yossarian.book_groups.views import (
 
 urlpatterns = [
     url(r'^$', HomePageView.as_view()),
+    url(r'^books/(?P<pk>[0-9]+)/$', BookDetailView.as_view(),
+        name='books-detail'),
     url(r'^books/$', BookListView.as_view()),
     url(r'^arena/$', ArenaView.as_view()),
     url(r'^arena_vote/(?P<pk>[0-9]+)/$', UpdateArenaVoteView.as_view()),

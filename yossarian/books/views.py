@@ -4,6 +4,7 @@ import random
 import requests
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.detail import DetailView
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.template.defaulttags import register
 from django.core.files import File
@@ -11,7 +12,7 @@ from django.utils import timezone
 
 from yossarian.book_groups.models import BookGroup
 
-from .models import Book, Vote, WeeklyBook
+from .models import Book, Vote
 from .forms import BookForm, ArenaVoteForm
 from .goodreads_api import get_book_details_by_id
 
@@ -115,3 +116,7 @@ class HomePageView(ListView):
         today = timezone.now()
         current_week_number = today.isocalendar()[1]
         return Book.objects.filter(weeklybook__week_number=current_week_number)
+
+
+class BookDetailView(DetailView):
+    model = Book
