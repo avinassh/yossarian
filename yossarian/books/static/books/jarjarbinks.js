@@ -1,3 +1,13 @@
+var replyBoxForm = '<div class="reply-box">' +
+                  '<form class="ui reply form" action="/comments/" method="post" >' +
+                   '<div class="field"><textarea></textarea></div>' +
+                   '<button class="ui blue labeled submit icon button">' +
+                   '<i class="icon edit"></i>Add Reply</button></form></div>'
+
+
+var commentChainDivString = '<div class="comments"></div>'
+
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -51,14 +61,6 @@ function vote(voteButton) {
         });
 }
 
-
-var replyBoxForm = '<div class="reply-box">' +
-                  '<form class="ui reply form" action="/comments/" method="post" >' +
-                   '<div class="field"><textarea></textarea></div>' +
-                   '<button class="ui blue labeled submit icon button">' +
-                   '<i class="icon edit"></i>Add Reply</button></form></div>'
-
-
 function displayCommentBox(replyDiv) {
     var commentDiv = $(replyDiv).closest(".comment");
     var replyBox = $(commentDiv).children(".reply-box");
@@ -93,10 +95,33 @@ function postComment(replyBoxEvent, formContainer) {
     $.post('/comments/', {raw_comment: raw_comment, book: targetValues.book_id,
                     parent: targetValues.comment_id}
         ).done(function(data) {
-            console.log("missa happy!")
+            if (data.success) { 
+                appendNewComment(commentDiv, data.comment);
+                $(replyBoxEvent.target).find('textarea').val('');
+                $(replyBoxEvent.target).parent().hide();
+            } 
         })
         .fail(function(data) {
             console.log("missa no care!")
         });
+}
 
+function appendNewComment(commentDiv, comment) {
+    var commentsChain = commentDiv.children(".comments");
+    var newCommentDiv = commentDiv.clone();
+    newCommentDiv.children(".reply-box").remove();
+    if (commentsChain.length) {
+        newCommentDiv.children(".comments").remove();
+    } else {
+        commentDiv.append(commentChainDivString);
+    }
+    commentsChain = commentDiv.children(".comments");
+
+    var targetValues = $.parseJSON(newCommentDiv.attr("target-values"));
+    targetValues.comment_id = comment.id;
+    newCommentDiv.attr("target-values", JSON.stringify(targetValues))
+    newCommentDiv.find(".text").text(comment.html_comment)
+    newCommentDiv.find(".author").text(comment.author_name)
+    newCommentDiv.find(".date").text("few seconds ago")
+    commentsChain.prepend(newCommentDiv)
 }
