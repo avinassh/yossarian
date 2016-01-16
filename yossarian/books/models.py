@@ -32,7 +32,6 @@ class Book(TimeStampMixin):
 
 class WeeklyBook(TimeStampMixin):
     week_number = models.PositiveIntegerField(
-        unique=True,
         validators=[
             MaxValueValidator(53),
             MinValueValidator(1)
