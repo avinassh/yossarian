@@ -7,10 +7,11 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.template.defaulttags import register
 from django.core.files import File
+from django.utils import timezone
 
 from yossarian.book_groups.models import BookGroup
 
-from .models import Book, Vote
+from .models import Book, Vote, WeeklyBook
 from .forms import BookForm, ArenaVoteForm
 from .goodreads_api import get_book_details_by_id
 
@@ -103,3 +104,14 @@ def save_book_cover(book, img_name, img_url):
             fp.write(block)
         book.cover.save(str(img_name) + '.jpg', File(fp))
     return True
+
+
+class HomePageView(ListView):
+    model = Book
+    context_object_name = 'book_list'
+    template_name = 'books/book_list.html'
+
+    def get_queryset(self):
+        today = timezone.now()
+        current_week_number = today.isocalendar()[1]
+        return Book.objects.filter(weeklybook__week_number=current_week_number)
