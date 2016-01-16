@@ -13,7 +13,7 @@
         <div class="content">
           <a class="author">{{ node.author_name }}</a>
           <div class="metadata">
-            <span class="date">Today at 5:42PM</span>
+            <span class="date">{{ node.created_on|naturaltime }}</span>
           </div>
           <div class="text">
             {{ node.html_comment|safe }}
