@@ -126,7 +126,7 @@ class CommentCreateView(View):
 
     def get_response_dict(self, comment):
         response = {
-                    'status': 'success',
+                    'success': True,
                     'comment': {
                         'id': comment.id,
                         'html_comment': comment.html_comment,
